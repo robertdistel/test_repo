@@ -28,9 +28,10 @@
 #include "bond_3ad.h"
 #include "bond_alb.h"
 #include "bond_options.h"
+#include "packetfunctions.h"
 
-#define DRV_VERSION	"3.7.1"
-#define DRV_RELDATE	"April 27, 2011"
+#define DRV_VERSION	"3.8.0"
+#define DRV_RELDATE	"March 1, 2016"
 #define DRV_NAME	"bonding"
 #define DRV_DESCRIPTION	"Ethernet Channel Bonding Driver"
 
@@ -143,6 +144,7 @@ struct bond_params {
 	int packets_per_slave;
 	int tlb_dynamic_lb;
 	struct reciprocal_value reciprocal_packets_per_slave;
+	struct s_prp_init_parameters prp_init_parameters;
 };
 
 struct bond_parm_tbl {
@@ -176,6 +178,7 @@ struct slave {
 	struct netpoll *np;
 #endif
 	struct kobject kobj;
+	struct s_prp_bonding_slave prp_bonding_slave_info;
 };
 
 /*
@@ -220,6 +223,7 @@ struct bonding {
 	struct   delayed_work alb_work;
 	struct   delayed_work ad_work;
 	struct   delayed_work mcast_work;
+	struct   s_prp_bonding prp_bond_info;
 #ifdef CONFIG_DEBUG_FS
 	/* debugging support via debugfs */
 	struct	 dentry *debug_dir;
